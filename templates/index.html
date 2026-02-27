@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RetailMind — Your AI Business Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+
+<!-- ── AMBIENT BACKGROUND ── -->
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="noise"></div>
+</div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L26 9V19L14 26L2 19V9L14 2Z" fill="url(#bg)" stroke="url(#stroke)" stroke-width="1.2"/>
+        <path d="M14 8L20 11.5V18.5L14 22L8 18.5V11.5L14 8Z" fill="url(#inner)"/>
+        <defs>
+          <linearGradient id="bg" x1="2" y1="2" x2="26" y2="26">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+          <linearGradient id="stroke" x1="2" y1="2" x2="26" y2="26">
+            <stop offset="0%" stop-color="#818cf8"/>
+            <stop offset="100%" stop-color="#c084fc"/>
+          </linearGradient>
+          <linearGradient id="inner" x1="8" y1="8" x2="20" y2="22">
+            <stop offset="0%" stop-color="#e0e7ff" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#f0abfc" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">RetailMind</span>
+      <span class="brand-sub">AI Business Partner</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a class="nav-link active" data-tab="dashboard" onclick="switchTab('dashboard',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 10a8 8 0 1116 0A8 8 0 012 10zm8-5a1 1 0 100 2 1 1 0 000-2zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/></svg>
+      </div>
+      <span>Overview</span>
+    </a>
+    <a class="nav-link" data-tab="decisions" onclick="switchTab('decisions',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+      </div>
+      <span>Smart Actions</span>
+    </a>
+    <a class="nav-link" data-tab="insights" onclick="switchTab('insights',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+      </div>
+      <span>Business Insights</span>
+    </a>
+    <a class="nav-link" data-tab="copilot" onclick="switchTab('copilot',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/></svg>
+      </div>
+      <span>Ask Anything</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="upload-card" id="uploadCard" onclick="document.getElementById('csvInput').click()">
+      <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="handleUpload(this)">
+      <div class="upload-card-icon" id="uploadIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+      </div>
+      <div class="upload-card-text">
+        <div class="upload-title" id="uploadTitle">Import Data</div>
+        <div class="upload-hint" id="uploadHint">Drop CSV file here</div>
+      </div>
+    </div>
+    <div class="ai-status" id="aiStatus" style="display:none">
+      <div class="ai-pulse"></div>
+      <span id="aiStatusText">AI ready</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="pageTitle">Store Overview</h1>
+      <p class="page-sub" id="pageSub">Your real-time retail intelligence dashboard</p>
+    </div>
+    <div class="topbar-right">
+      <div class="live-badge" id="liveBadge" style="display:none">
+        <span class="live-dot"></span>AI Active
+      </div>
+      <div class="clock" id="clock"></div>
+    </div>
+  </header>
+
+  <!-- ── WELCOME SCREEN ── -->
+  <div id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-content">
+      <div class="welcome-glyph">
+        <svg width="80" height="80" viewBox="0 0 28 28" fill="none">
+          <path d="M14 2L26 9V19L14 26L2 19V9L14 2Z" fill="url(#wbg)" stroke="url(#wstroke)" stroke-width="0.8"/>
+          <path d="M14 8L20 11.5V18.5L14 22L8 18.5V11.5L14 8Z" fill="url(#winner)"/>
+          <defs>
+            <linearGradient id="wbg" x1="2" y1="2" x2="26" y2="26">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#a855f7"/>
+            </linearGradient>
+            <linearGradient id="wstroke" x1="2" y1="2" x2="26" y2="26">
+              <stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#c084fc"/>
+            </linearGradient>
+            <linearGradient id="winner" x1="8" y1="8" x2="20" y2="22">
+              <stop offset="0%" stop-color="#e0e7ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#f0abfc" stop-opacity="0.6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h2 class="welcome-title">Your AI Business Partner</h2>
+      <p class="welcome-sub">Upload your sales data and instantly get personalized insights, smart inventory decisions, and a business advisor that knows your store inside out.</p>
+
+      <div class="drop-zone" id="dropZone"
+           ondrop="handleDrop(event)" ondragover="event.preventDefault()"
+           ondragenter="this.classList.add('dragging')"
+           ondragleave="this.classList.remove('dragging')"
+           onclick="document.getElementById('csvInput').click()">
+        <div class="drop-zone-inner">
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          <p class="drop-title">Drop your CSV file here</p>
+          <p class="drop-hint">or click to browse · CSV only</p>
+          <div class="drop-req">Needs: Product, Category, Units_Sold, Current_Stock, Price, Competitor_Price</div>
+        </div>
+      </div>
+
+      <div class="feature-pills">
+        <div class="pill"><span>✦</span> AI-Powered Demand Forecasting</div>
+        <div class="pill"><span>⚡</span> Instant Business Decisions</div>
+        <div class="pill"><span>💬</span> Natural Language Q&A</div>
+        <div class="pill"><span>📊</span> Live Analytics</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loader-screen" id="loaderScreen" style="display:none">
+    <div class="loader-inner">
+      <div class="loader-rings">
+        <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      </div>
+      <div class="loader-text" id="loaderText">Analysing your data...</div>
+      <div class="loader-sub" id="loaderSub">This takes a moment</div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: DASHBOARD ═══════ -->
+  <div class="tab" id="tab-dashboard" style="display:none">
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <div class="charts-grid-2-1">
+      <div class="glass-card">
+        <div class="card-head"><span class="card-title">Sales vs Inventory</span><span class="card-pill">Top 20 Products</span></div>
+        <div class="chart-box"><canvas id="cDemand"></canvas></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-head"><span class="card-title">Category Split</span></div>
+        <div class="chart-box chart-box-sm"><canvas id="cCat"></canvas></div>
+      </div>
+    </div>
+
+    <div class="charts-grid-2">
+      <div class="glass-card">
+        <div class="card-head"><span class="card-title">Sales Over Time</span><span class="card-pill">Daily</span></div>
+        <div class="chart-box"><canvas id="cTrend"></canvas></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-head"><span class="card-title">Your Price vs Market</span></div>
+        <div class="chart-box"><canvas id="cPrice"></canvas></div>
+      </div>
+    </div>
+
+    <div class="glass-card collapsible" id="dataCard">
+      <div class="card-head clickable" onclick="toggleData()">
+        <span class="card-title">Data Preview</span>
+        <button class="pill-btn" id="dataToggleBtn">Show table ↓</button>
+      </div>
+      <div id="dataTableWrap" style="display:none"><div class="table-scroll" id="dataTable"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: DECISIONS ═══════ -->
+  <div class="tab" id="tab-decisions" style="display:none">
+    <div class="decisions-toolbar">
+      <div class="search-box">
+        <svg class="search-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/></svg>
+        <input id="decSearch" class="search-input" placeholder="Search products..." oninput="filterDecisions(this.value)">
+      </div>
+      <div class="filter-pills" id="filterPills">
+        <button class="fpill active" onclick="setUrgencyFilter('all',this)">All</button>
+        <button class="fpill fpill-crit" onclick="setUrgencyFilter('Critical',this)">Critical</button>
+        <button class="fpill fpill-high" onclick="setUrgencyFilter('High',this)">High</button>
+        <button class="fpill fpill-med" onclick="setUrgencyFilter('Medium',this)">Medium</button>
+        <button class="fpill fpill-low" onclick="setUrgencyFilter('Low',this)">Low</button>
+      </div>
+      <div class="dec-count" id="decCount"></div>
+    </div>
+    <div class="decisions-grid" id="decisionsGrid"></div>
+  </div>
+
+  <!-- ═══════ TAB: INSIGHTS ═══════ -->
+  <div class="tab" id="tab-insights" style="display:none">
+    <div class="insights-hero" id="insightsHero">
+      <div class="health-ring-wrap">
+        <canvas id="healthRing" width="180" height="180"></canvas>
+        <div class="health-overlay">
+          <div class="health-score" id="healthScore">--</div>
+          <div class="health-label" id="healthLabel">--</div>
+        </div>
+      </div>
+      <div class="insights-hero-text">
+        <div class="insights-eyebrow">Business Health Report</div>
+        <div class="insights-summary" id="insightsSummary">Generate your first report by clicking below.</div>
+        <div class="revenue-opp" id="revenueOpp"></div>
+      </div>
+    </div>
+
+    <div class="insights-3col">
+      <div class="glass-card ins-card">
+        <div class="ins-head risks-head">⚠ Risks</div>
+        <div id="risksList"></div>
+      </div>
+      <div class="glass-card ins-card">
+        <div class="ins-head opp-head">✦ Opportunities</div>
+        <div id="oppList"></div>
+      </div>
+      <div class="glass-card ins-card">
+        <div class="ins-head cat-head">◈ By Category</div>
+        <div id="catInsights"></div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="ins-head actions-head">⚡ Action Plan</div>
+      <div id="actionsList"></div>
+    </div>
+
+    <button class="refresh-ai-btn" onclick="loadInsights()">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"/></svg>
+      Refresh Report
+    </button>
+  </div>
+
+  <!-- ═══════ TAB: COPILOT ═══════ -->
+  <div class="tab" id="tab-copilot" style="display:none">
+    <div class="copilot-wrap">
+
+      <div class="copilot-left">
+        <div class="copilot-header">
+          <div class="copilot-avatar">
+            <svg viewBox="0 0 28 28" fill="none" width="28">
+              <path d="M14 2L26 9V19L14 26L2 19V9L14 2Z" fill="url(#ca)"/>
+              <path d="M14 8L20 11.5V18.5L14 22L8 18.5V11.5L14 8Z" fill="white" fill-opacity="0.7"/>
+              <defs>
+                <linearGradient id="ca" x1="2" y1="2" x2="26" y2="26">
+                  <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#a855f7"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="cop-name">RetailMind</div>
+            <div class="cop-sub">Your AI business advisor</div>
+          </div>
+          <button class="clear-btn" onclick="clearChat()">Clear</button>
+        </div>
+
+        <div class="suggestions" id="suggestions">
+          <p class="sug-label">Try asking</p>
+          <div class="sug-grid" id="sugGrid"></div>
+        </div>
+
+        <div class="cop-input-area">
+          <textarea id="copInput" class="cop-input" rows="3"
+                    placeholder="Ask anything about your store..."
+                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCopilot();}"></textarea>
+          <button class="send-btn" onclick="sendCopilot()">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="18"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="copilot-right">
+        <div class="chat-area" id="chatArea">
+          <div class="chat-empty">
+            <div class="chat-empty-icon">
+              <svg viewBox="0 0 28 28" fill="none" width="48">
+                <path d="M14 2L26 9V19L14 26L2 19V9L14 2Z" fill="url(#ce)"/>
+                <defs><linearGradient id="ce" x1="2" y1="2" x2="26" y2="26"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+              </svg>
+            </div>
+            <p>Ask me anything about your store and I'll give you specific, actionable answers.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>
